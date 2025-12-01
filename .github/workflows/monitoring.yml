@@ -10,35 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Verificar salud del servicio
+      - name: Verificar que la página principal responde
         run: |
-          curl -f https://tuapp.com/health || (echo "::error::El endpoint /health falló" && exit 1)
+          curl -f https://worklink.pythonanywhere.com/ \
+          || (echo "::error::La página principal no responde" && exit 1)
 
-      - name: Consultar métricas Prometheus
+      - name: Verificar página de login
         run: |
-          curl -f https://tuapp.com/metrics > metrics.txt || echo "::warning::No se pudo acceder a /metrics"
-          cat metrics.txt
+          curl -f https://worklink.pythonanywhere.com/login \
+          || echo "::warning::La página /login no respondió"
 
-      - name: Analizar métricas
+      - name: Verificar página de registro
         run: |
-          if grep -qi "error" metrics.txt; then
-            echo "::warning::Se detectaron posibles errores en las métricas"
-          fi
+          curl -f https://worklink.pythonanywhere.com/register \
+          || echo "::warning::La página /register no respondió"
 
-      - name: Obtener logs
+      - name: Verificar módulo empresa
         run: |
-          curl -f https://tuapp.com/logs/latest > logs.json || echo "::warning::No se pudieron obtener logs"
-          cat logs.json
+          curl -f https://worklink.pythonanywhere.com/empresa \
+          || echo "::warning::La página /empresa no respondió"
 
-      - name: Analizar logs
+      - name: Verificar módulo admin
         run: |
-          if grep -q "ERROR" logs.json; then
-            echo "::error::Se detectaron errores críticos en los logs"
-          fi
+          curl -f https://worklink.pythonanywhere.com/admin \
+          || echo "::warning::La página /admin no respondió"
 
-      - name: Verificar trazas
+      - name: Verificar logs (si existieran)
         run: |
-          curl -f https://otel-collector.tuempresa.com/v1/traces || echo "::warning::No se encontraron trazas recientes"
-
+          curl -f https://worklink.pythonanywhere.com/logs || echo "::warning::No existe /logs"
+        
       - name: Finalizar monitoreo
-        run: echo "Proceso de monitoreo finalizado correctamente."
+        run: echo "Monitoreo completado."
+
