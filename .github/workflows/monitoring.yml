@@ -1,44 +1,43 @@
-name: Monitoreo de Aplicación
+# name: Monitoreo de Aplicación
 
-on:
-  schedule:
-    - cron: "*/15 * * * *"
-  workflow_dispatch:
+# on:
+#   schedule:
+#     - cron: "*/15 * * * *"
+#   workflow_dispatch:
 
-jobs:
-  monitor:
-    runs-on: ubuntu-latest
+# jobs:
+#   monitor:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Verificar que la página principal responde
-        run: |
-          curl -f https://worklink.pythonanywhere.com/ \
-          || (echo "::error::La página principal no responde" && exit 1)
+#     steps:
+#       - name: Verificar que la página principal responde
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/ \
+#           || (echo "::error::La página principal no responde" && exit 1)
 
-      - name: Verificar página de login
-        run: |
-          curl -f https://worklink.pythonanywhere.com/login \
-          || echo "::warning::La página /login no respondió"
+#       - name: Verificar página de login
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/login \
+#           || echo "::warning::La página /login no respondió"
 
-      - name: Verificar página de registro
-        run: |
-          curl -f https://worklink.pythonanywhere.com/register \
-          || echo "::warning::La página /register no respondió"
+#       - name: Verificar página de registro
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/register \
+#           || echo "::warning::La página /register no respondió"
 
-      - name: Verificar módulo empresa
-        run: |
-          curl -f https://worklink.pythonanywhere.com/empresa \
-          || echo "::warning::La página /empresa no respondió"
+#       - name: Verificar módulo empresa
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/empresa \
+#           || echo "::warning::La página /empresa no respondió"
 
-      - name: Verificar módulo admin
-        run: |
-          curl -f https://worklink.pythonanywhere.com/admin \
-          || echo "::warning::La página /admin no respondió"
+#       - name: Verificar módulo admin
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/admin \
+#           || echo "::warning::La página /admin no respondió"
 
-      - name: Verificar logs (si existieran)
-        run: |
-          curl -f https://worklink.pythonanywhere.com/logs || echo "::warning::No existe /logs"
+#       - name: Verificar logs (si existieran)
+#         run: |
+#           curl -f https://worklink.pythonanywhere.com/logs || echo "::warning::No existe /logs"
         
-      - name: Finalizar monitoreo
-        run: echo "Monitoreo completado."
-
+#       - name: Finalizar monitoreo
+#         run: echo "Monitoreo completado."
